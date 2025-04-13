@@ -40,4 +40,11 @@ button {
     border: none;
     border-radius: 4px;
   }
+
+  li ul {
+  padding-left: 1.5em;
+  margin-top: 5px;
+  list-style-type: circle;
+  }
+
   
