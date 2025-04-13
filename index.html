@@ -6,6 +6,21 @@
   <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+  <!-- 彈出視窗 Modal -->
+<div id="modal" class="modal hidden">
+  <div class="modal-content">
+    <h2 id="modalTitle">項目名稱</h2>
+    <div id="historyList"></div>
+    
+    <input id="priceInput" type="number" placeholder="價格">
+    <input id="placeInput" type="text" placeholder="購買地點">
+    <button onclick="addHistory()">新增紀錄</button>
+    <hr>
+    <button onclick="deleteItem()" style="background:red;color:white;">❌ 刪除項目</button>
+    <button onclick="closeModal()">關閉</button>
+  </div>
+</div>
+
 <body>
   <div class="container">
     <h1>🛒 我的購物清單</h1>
