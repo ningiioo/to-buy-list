@@ -5,15 +5,13 @@
   <title>My ToBuy List</title>
   <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js"></script>
+
 </head>
 
 <!-- Firebase SDK -->
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
+<script>
   // Your web app's Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyAX0SfHvlelWWdg7Q-8WHzmWNdKE2vtI3w",
@@ -24,23 +22,26 @@
     appId: "1:363437967200:web:798c997017e75d2a278005"
   };
 
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+  firebase.initializeApp(firebaseConfig);
 
   // 初始化 Firestore
-  const db = getFirestore(app);
+  const db = firebase.firestore();
 
   // 讀取資料
+  const collection = firebase.firestore().collection.bind(db);
+  const getDocs = async (coll) => {
+    const snapshot = await coll.get();
+    return snapshot.docs;
+  };
+
   async function loadItemsFromFirebase() {
-    const querySnapshot = await getDocs(collection(db, "items"));
+    const docs = await getDocs(collection("items"));
     const itemsArray = [];
-    querySnapshot.forEach((doc) => {
-      itemsArray.push(doc.data()); // 取出每個 document 的資料
+    docs.forEach((doc) => {
+      itemsArray.push(doc.data());
     });
     return itemsArray;
   }
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
 </script>
 
 <body>
