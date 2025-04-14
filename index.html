@@ -2,14 +2,14 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>我的購物清單</title>
+  <title>My ToBuy List</title>
   <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
   <div class="container">
-    <h1>🛒 我的購物清單</h1>
+    <h2>To Buy List</h2>
     <input id="itemInput" type="text" placeholder="輸入要買的東西">
     <button onclick="addItem()">加入</button>
     <ul id="itemList"></ul>
@@ -21,11 +21,21 @@
     <h3 id="modalTitle">項目名稱</h3>
   
     <input id="priceInput" type="number" placeholder="價格">
-    <input id="placeInput" type="text" placeholder="購買地點">
+    <input id="quantityInput" type="number" placeholder="數量">
+
+    <select id="placeInput">
+      <option value="">選擇購買地點</option>
+      <option value="Tesco">Tesco</option>
+      <option value="Lidl">Lidl</option>
+      <option value="Sainsbury's">Sainsbury's</option>
+      <option value="M&S">M&S</option>
+      <option value="東方行">東方行</option>
+      <option value="其他">其他</option>
+    </select>
+
     <button onclick="addHistory()">新增紀錄</button>
     <div id="historyList"></div>
-    <hr>
-    <button onclick="removeItem(index)" style="background:red;color:white;">刪除項目</button>
+    <button onclick="deleteItem()" style="background:red;color:white;">刪除項目</button>
     <button onclick="closeModal()">關閉</button>
   </div>
 </div>
