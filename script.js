@@ -18,7 +18,27 @@ const modal = document.getElementById('modal');
 const modalTitle = document.getElementById('modalTitle');
 const historyList = document.getElementById('historyList');
 
-async function renderList() {
+async function loadItemsFromFirebase() {
+  const querySnapshot = await getDocs(collection(db, "items"));
+  const itemsArray = [];
+  querySnapshot.forEach((doc) => {
+    itemsArray.push(doc.data()); // 取出每個 document 的資料
+  });
+  return itemsArray;
+}
+
+function renderList(items) {
+  const itemList = document.getElementById('itemList');
+  itemList.innerHTML = '';
+
+  items.forEach((item) => {
+    const li = document.createElement('li');
+    li.textContent = item.name; // 假設 Firestore 中每個項目有 name 欄位
+    itemList.appendChild(li);
+  });
+}
+
+`async function renderList() {
   list.innerHTML = '';
 
   const items = await loadItemsFromFirebase(); // 讀取資料
@@ -62,7 +82,7 @@ async function renderList() {
     list.appendChild(li);
 
   });
-}
+}`
 
 
 async function addItem() {
@@ -73,6 +93,7 @@ async function addItem() {
     await addItemToFirebase(newItem); // 儲存到 Firebase
     renderList();
     input.value = '';
+    loadItemsFromFirebase().then(items => renderList(items));
   }
 }
 
