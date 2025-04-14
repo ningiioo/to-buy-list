@@ -51,9 +51,19 @@ function renderHistory(history) {
   if (history.length === 0) {
     historyList.innerHTML = '<div>尚無紀錄</div>';
   } else {
-    history.forEach(h => {
+    history.forEach((h, i) => {
       const div = document.createElement('div');
-      div.textContent = ` ${h.price} ， ${h.place}`;
+      div.innerHTML = `
+      <div>
+        £ ${h.price} / ${h.quantity} (${h.unitPrice}) | ${h.place} | ${h.date}
+      </div>
+      <button onclick="deleteHistory(${i})">X</button>
+       `;
+
+      div.style.display = 'flex';
+      div.style.justifyContent = 'space-between';
+      div.style.alignItems = 'center';
+
       historyList.appendChild(div);
     });
   }
@@ -61,21 +71,34 @@ function renderHistory(history) {
 
 function addHistory() {
   const price = document.getElementById('priceInput').value.trim();
+  const quantity = document.getElementById('quantityInput').value.trim();
   const place = document.getElementById('placeInput').value.trim();
-  if (price && place && currentIndex !== null) {
-    items[currentIndex].history.push({ price, place });
+  if (price && quantity && place && currentIndex !== null) {
+    const unitPrice = (parseFloat(price) / parseFloat(quantity)).toFixed(2);
+    const date = new Date().toLocaleDateString();
+
+    items[currentIndex].history.push({ price, quantity, unitPrice, place, date });
     localStorage.setItem('toBuyList', JSON.stringify(items));
-    renderHistory(items[currentIndex].history);
+
     document.getElementById('priceInput').value = '';
+    document.getElementById('quantityInput').value = '';
     document.getElementById('placeInput').value = '';
+
+    renderHistory(items[currentIndex].history);
   }
 }
 
-function removeItem(index) {
-  if (confirm(`確定要刪除「${items[index].name}」嗎？`)) {
-    items.splice(index, 1);
-    save();
-    renderList();
+function deleteHistory(historyIndex) {
+  if (currentIndex !== null) {
+    items[currentIndex].history.splice(historyIndex, 1);
+    localStorage.setItem('toBuyList', JSON.stringify(items));
+    renderHistory(items[currentIndex].history);
+  }
+}
+
+function deleteItem() {
+  if (currentIndex !== null) {
+    removeItem(currentIndex);
   }
 }
 
