@@ -7,17 +7,49 @@ const modalTitle = document.getElementById('modalTitle');
 const historyList = document.getElementById('historyList');
 
 function renderList() {
-  list.innerHTML = '';
-  items.forEach((item, index) => {
+  itemListEl.innerHTML = '';
+
+  // 勾選未勾選的放上面，勾選的移到下面
+  const sortedItems = itemList.slice().sort((a, b) => {
+    return (a.checked === b.checked) ? 0 : (a.checked ? 1 : -1);
+  });
+
+  sortedItems.forEach((item, sortedIndex) => {
     const li = document.createElement('li');
-    li.innerHTML = `<span onclick="openModal(${index})">${item.name}</span>`;
-    list.appendChild(li);
+    if (item.checked) li.classList.add('checked');
+
+    const index = itemList.indexOf(item); // 找回原始 index
+
+    // ✅ 勾選框
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = item.checked;
+    checkbox.onchange = () => {
+      itemList[index].checked = checkbox.checked;
+      saveData();
+      renderList();
+    };
+
+    // 📝 購買項目名稱
+    const span = document.createElement('span');
+    span.textContent = item.name;
+    span.style.marginLeft = '10px';
+    span.style.cursor = 'pointer';
+    span.onclick = () => {
+      currentIndex = index;
+      openModal();
+    };
+
+    li.appendChild(checkbox);
+    li.appendChild(span);
+    itemListEl.appendChild(li);
   });
 }
 
 function addItem() {
   const input = document.getElementById('itemInput');
   const value = input.value.trim();
+  itemList.push({ name, history: [], checked: false });
   if (value) {
     items.push({ name: value, history: [] });
     localStorage.setItem('toBuyList', JSON.stringify(items));
@@ -32,6 +64,8 @@ function removeItem(index) {
   renderList();
   closeModal();
 }
+
+let placeList = [];
 
 function openModal(index) {
   currentIndex = index;
