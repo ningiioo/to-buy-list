@@ -53,7 +53,7 @@ function renderHistory(history) {
   } else {
     history.forEach(h => {
       const div = document.createElement('div');
-      div.textContent = `💰 ${h.price} 元，📍 ${h.place}`;
+      div.textContent = ` £{h.price} ， £{h.place}`;
       historyList.appendChild(div);
     });
   }
