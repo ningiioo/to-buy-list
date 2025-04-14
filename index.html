@@ -18,14 +18,15 @@
     <!-- 彈出視窗 Modal -->
 <div id="modal" class="modal hidden">
   <div class="modal-content">
-    <h2 id="modalTitle">項目名稱</h2>
-    <div id="historyList"></div>
+    <h3 id="modalTitle">項目名稱</h3>
+  
     
     <input id="priceInput" type="number" placeholder="價格">
     <input id="placeInput" type="text" placeholder="購買地點">
     <button onclick="addHistory()">新增紀錄</button>
+    <div id="historyList"></div>
     <hr>
-    <button onclick="deleteItem()" style="background:red;color:white;">❌ 刪除項目</button>
+    <button onclick="deleteItem()" style="background:red;color:white;">刪除項目</button>
     <button onclick="closeModal()">關閉</button>
   </div>
 </div>
