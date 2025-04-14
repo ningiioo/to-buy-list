@@ -1,83 +1,50 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <title>My ToBuy List</title>
-  <link rel="stylesheet" href="style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js"></script>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的購物清單</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
-<!-- Firebase SDK -->
-<script>
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyAX0SfHvlelWWdg7Q-8WHzmWNdKE2vtI3w",
-    authDomain: "to-buy-list-2323b.firebaseapp.com",
-    projectId: "to-buy-list-2323b",
-    storageBucket: "to-buy-list-2323b.firebasestorage.app",
-    messagingSenderId: "363437967200",
-    appId: "1:363437967200:web:798c997017e75d2a278005"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-
-  // 初始化 Firestore
-  const db = firebase.firestore();
-
-  // 讀取資料
-  const collection = firebase.firestore().collection.bind(db);
-  const getDocs = async (coll) => {
-    const snapshot = await coll.get();
-    return snapshot.docs;
-  };
-
-  async function loadItemsFromFirebase() {
-    const docs = await getDocs(collection("items"));
-    const itemsArray = [];
-    docs.forEach((doc) => {
-      itemsArray.push(doc.data());
-    });
-    return itemsArray;
-  }
-</script>
-
 <body>
   <div class="container">
-    <h2>To Buy List</h2>
-    <input id="itemInput" type="text" placeholder="輸入要買的東西">
+    <h3>To Buy List</h3>
+    <input id="itemInput" type="text" placeholder="新增項目" />
     <button onclick="addItem()">加入</button>
     <ul id="itemList"></ul>
   </div>
 
-    <!-- 彈出視窗 Modal -->
-<div id="modal" class="modal hidden">
-  <div class="modal-content">
-    <h3 id="modalTitle">項目名稱</h3>
-  
-    <input id="priceInput" type="number" placeholder="價格">
-    <input id="quantityInput" type="number" placeholder="數量">
+  <!-- Modal 視窗 -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <h2 id="modalTitle">項目名稱</h2>
 
-    <select id="placeInput">
-      <option value="">選擇購買地點</option>
-      <option value="Tesco">Tesco</option>
-      <option value="Lidl">Lidl</option>
-      <option value="Sainsbury's">Sainsbury's</option>
-      <option value="M&S">M&S</option>
-      <option value="東方行">東方行</option>
-      <option value="其他">其他</option>
-    </select>
+      <input id="priceInput" type="number" placeholder="價格" />
+      <input id="quantityInput" type="number" placeholder="數量" />
 
-    <button onclick="addHistory()">新增紀錄</button>
-    <div id="historyList"></div>
-    <button onclick="deleteItem()" style="background:red;color:white;">刪除項目</button>
-    <button onclick="closeModal()">關閉</button>
+      <select id="placeInput">
+        <option value="">選擇購買地點</option>
+        <option value="Tesco">Tesco</option>
+        <option value="Lidl">Lidl</option>
+        <option value="Aldi">Sainsbury's</option>
+        <option value="M&S">M&S</option>
+        <option value="Saver">Saver</option>
+        <option value="Waitrose">Waitrose</option>
+        <option value="東方行">東方行</option>
+        <option value="Bargain Buys">Bargain Buys</option>
+        <option value="One Beyond">One Beyond</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <button onclick="addHistory()">新增紀錄</button>
+
+      <div id="historyList"></div>
+
+      <button onclick="deleteItem()" style="background: red; color: white;">❌ 刪除此項目</button>
+      <button onclick="closeModal()">關閉</button>
+    </div>
   </div>
-</div>
-  
+
   <script src="script.js"></script>
-  
 </body>
 </html>
