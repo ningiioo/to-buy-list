@@ -1,90 +1,112 @@
 body {
-    font-family: sans-serif;
-    background-color: #f2f2f2;
-    padding: 20px;
-  }
-  
-  .container {
-    width: 100%;
-    max-width: 400px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-sizing: border-box;
-  }
-  
-input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
-  box-sizing: border-box;
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 5px;
-  box-sizing: border-box;
-}
-  
-  li {
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  li button {
-    background: red;
-    color: white;
-    border: none;
-    border-radius: 4px;
-  }
-
-  li ul {
-  padding-left: 1.5em;
-  margin-top: 5px;
-  list-style-type: circle;
-  }
-
-.modal {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal.hidden {
-  display: none;
-}
-
-.modal-content {
-  background: white;
+  font-family: sans-serif;
+  background-color: #ececec;
   padding: 20px;
-  width: 90%;
+}
+
+.container {
+  width: 100%;
   max-width: 400px;
-  border-radius: 8px;
+  margin: auto;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
   box-sizing: border-box;
 }
 
-#historyList {
-  margin-bottom: 10px;
+.container input {
+  width: calc(75% - 20px);
+  padding: 7px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
-#historyList div {
-  background: #f0f0f0;
-  padding: 6px;
-  margin-bottom: 5px;
-  border-radius: 4px;
+.container button {
+  padding: 5px 5px;
+  width: calc(25% - 20px);
   font-size: 14px;
+  border-radius: 5px;
+  border: none;
 }
 
-#itemList li span {
+ul {
+  list-style-type: none;
+  padding: 3px;
+}
+
+li {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+li button {
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+li ul {
+padding-left: 1.5em;
+margin-top: 5px;
+list-style-type: circle;
+}
+
+#itemList li span,
+.modal-content select,
+.modal-content button {
   cursor: pointer;
 }
 
-  
+.modal {
+position: fixed;
+top: 0; left: 0;
+width: 100%; height: 100%;
+background: rgba(0,0,0,0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+}
+
+.modal.hidden {
+display: none;
+}
+
+.modal-content {
+background: white;
+padding: 20px;
+width: 90%;
+max-width: 400px;
+border-radius: 8px;
+box-sizing: border-box;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content button {
+  display: block;
+  width: 90%;
+  margin-bottom: 10px;
+  padding: 6px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#historyList div {
+background: #ffffff;
+margin-bottom: 10px;
+font-size: 12px;
+}
+
+#historyList div button {
+  width: 25%;
+  font-size: 12px;
+  background: #ffffff;
+  color: #ff4d4d;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
