@@ -7,6 +7,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
+<!-- Firebase SDK -->
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAX0SfHvlelWWdg7Q-8WHzmWNdKE2vtI3w",
+    authDomain: "to-buy-list-2323b.firebaseapp.com",
+    projectId: "to-buy-list-2323b",
+    storageBucket: "to-buy-list-2323b.firebasestorage.app",
+    messagingSenderId: "363437967200",
+    appId: "1:363437967200:web:ae9cd9037aa58cbe278005"
+  };
+
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+  // 初始化 Firestore
+  const db = getFirestore(app);
+
+  // 讀取資料
+  async function loadItemsFromFirebase() {
+    const querySnapshot = await getDocs(collection(db, "items"));
+    const itemsArray = [];
+    querySnapshot.forEach((doc) => {
+      itemsArray.push(doc.data()); // 取出每個 document 的資料
+    });
+    return itemsArray;
+  }
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
+
 <body>
   <div class="container">
     <h2>To Buy List</h2>
