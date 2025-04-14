@@ -83,5 +83,8 @@ button {
   font-size: 14px;
 }
 
+#itemList li span {
+  cursor: pointer;
+}
 
   
