@@ -6,7 +6,16 @@
   <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-  <!-- 彈出視窗 Modal -->
+
+<body>
+  <div class="container">
+    <h1>🛒 我的購物清單</h1>
+    <input id="itemInput" type="text" placeholder="輸入要買的東西">
+    <button onclick="addItem()">加入</button>
+    <ul id="itemList"></ul>
+  </div>
+
+    <!-- 彈出視窗 Modal -->
 <div id="modal" class="modal hidden">
   <div class="modal-content">
     <h2 id="modalTitle">項目名稱</h2>
@@ -20,14 +29,8 @@
     <button onclick="closeModal()">關閉</button>
   </div>
 </div>
-
-<body>
-  <div class="container">
-    <h1>🛒 我的購物清單</h1>
-    <input id="itemInput" type="text" placeholder="輸入要買的東西">
-    <button onclick="addItem()">加入</button>
-    <ul id="itemList"></ul>
-  </div>
+  
   <script src="script.js"></script>
+  
 </body>
 </html>
