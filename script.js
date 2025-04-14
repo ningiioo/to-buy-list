@@ -1,15 +1,3 @@
-import { addDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
-
-// 新增項目到 Firebase
-async function addItemToFirebase(item) {
-  try {
-    const docRef = await addDoc(collection(db, "items"), item);
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
-}
-
 let items = JSON.parse(localStorage.getItem('toBuyList')) || [];
 let currentIndex = null;
 
@@ -18,82 +6,66 @@ const modal = document.getElementById('modal');
 const modalTitle = document.getElementById('modalTitle');
 const historyList = document.getElementById('historyList');
 
-async function loadItemsFromFirebase() {
-  const querySnapshot = await getDocs(collection(db, "items"));
-  const itemsArray = [];
-  querySnapshot.forEach((doc) => {
-    itemsArray.push(doc.data()); // 取出每個 document 的資料
-  });
-  return itemsArray;
-}
-
-function renderList(items) {
-  const itemList = document.getElementById('itemList');
-  itemList.innerHTML = '';
-
-  items.forEach((item) => {
-    const li = document.createElement('li');
-    li.textContent = item.name; // 假設 Firestore 中每個項目有 name 欄位
-    itemList.appendChild(li);
-  });
-}
-
-`async function renderList() {
+function renderList() {
   list.innerHTML = '';
 
-  const items = await loadItemsFromFirebase(); // 讀取資料
-  
+
   const incomplete = items.filter(item => !item.completed);
   const complete = items.filter(item => item.completed);
   const sortedItems = [...incomplete, ...complete];
 
   sortedItems.forEach((item, index) => {
     const li = document.createElement('li');
+    li.style.display = 'flex';
+    li.style.padding = '5px';
     li.style.borderBottom = '1px solid #ccc';
+    li.style.cursor = 'pointer';
+    li.style.backgroundColor = index % 2 === 0 ? '#f9f9f9' : '#fff';
+    li.style.transition = 'background-color 0.3s';
+    li.onmouseover = () => li.style.backgroundColor = '#e0e0e0';
+    li.onmouseout = () => li.style.backgroundColor = index % 2 === 0 ? '#f9f9f9' : '#fff';
+    li.style.borderRadius = '5px';
 
+    // 建立勾選框
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    checkbox.checked = item.completed;
     checkbox.style.marginRight = '10px';
+    checkbox.checked = item.completed;
     checkbox.style.width = '14px';
-    checkbox.style.cursor = 'pointer';
-    
-    checkbox.onchange = async () => {
-      const realIndex = items.findIndex(i => i.name === item.name && i.completed === item.completed);
-      if (realIndex !== -1) {
-        items[realIndex].completed = checkbox.checked;
-        await updateItemInFirebase(item); // 更新 Firebase 中的項目
-        renderList(); // 重新渲染清單
-      }
+    checkbox.style.height = '14px';
+
+    checkbox.onchange = () => {
+      item.completed = checkbox.checked;
+      localStorage.setItem('toBuyList', JSON.stringify(items));
+      renderList();
     };
-    
+
+    // 建立文字，點擊後開啟 modal
     const span = document.createElement('span');
     span.textContent = item.name;
     span.onclick = () => openModal(index);
 
+    // 把勾選框和文字加到 li 裡
     li.appendChild(checkbox);
     li.appendChild(span);
+    list.appendChild(li);
 
     if (item.completed) {
       li.style.opacity = '0.4';
       li.style.textDecoration = 'line-through';
-    }    
-
-    list.appendChild(li);
+    }
 
   });
-}`
+}
 
-
-async function addItem() {
+function addItem() {
   const input = document.getElementById('itemInput');
   const value = input.value.trim();
   if (value) {
-    items.push({ name: value, history: [], completed: false});
-    await addItemToFirebase(newItem); // 儲存到 Firebase
-    renderList();
+    items.push({ name: value, history: [] });
+    localStorage.setItem('toBuyList', JSON.stringify(items));
     input.value = '';
-    loadItemsFromFirebase().then(items => renderList(items));
+    renderList();
   }
 }
 
@@ -117,33 +89,11 @@ function closeModal() {
   currentIndex = null;
 }
 
-function renderHistory(history) {
-  historyList.innerHTML = '';
-  if (history.length === 0) {
-    historyList.innerHTML = '<div>尚無紀錄</div>';
-  } else {
-    history.forEach((h, i) => {
-      const div = document.createElement('div');
-      div.innerHTML = `
-      <div>
-        £ ${h.price} / ${h.quantity} (${h.unitPrice}) | ${h.place} | ${h.date}
-      </div>
-      <button onclick="deleteHistory(${i})">X</button>
-       `;
-
-      div.style.display = 'flex';
-      div.style.justifyContent = 'space-between';
-      div.style.alignItems = 'center';
-
-      historyList.appendChild(div);
-    });
-  }
-}
-
 function addHistory() {
   const price = document.getElementById('priceInput').value.trim();
   const quantity = document.getElementById('quantityInput').value.trim();
   const place = document.getElementById('placeInput').value.trim();
+
   if (price && quantity && place && currentIndex !== null) {
     const unitPrice = (parseFloat(price) / parseFloat(quantity)).toFixed(2);
     const date = new Date().toLocaleDateString();
@@ -156,6 +106,26 @@ function addHistory() {
     document.getElementById('placeInput').value = '';
 
     renderHistory(items[currentIndex].history);
+  }
+}
+
+function renderHistory(history) {
+  historyList.innerHTML = '';
+  if (history.length === 0) {
+    historyList.innerHTML = '<div>尚無紀錄</div>';
+  } else {
+    history.forEach((h, i) => {
+      const div = document.createElement('div');
+
+      div.innerHTML = `
+        <div>
+           £ ${h.price} / ${h.quantity} (${h.unitPrice}）| ${h.place} ｜ ${h.date}
+        </div>
+        <button onclick="deleteHistory(${i})">刪除</button>
+      `;
+
+      historyList.appendChild(div);
+    });
   }
 }
 
@@ -173,4 +143,4 @@ function deleteItem() {
   }
 }
 
-renderList(); // 初次載入時顯示清單
+renderList();
