@@ -15,7 +15,10 @@ function renderList() {
   const sortedItems = [...incomplete, ...complete];
 
   sortedItems.forEach((item, index) => {
+    const originalIndex = items.indexOf(item);
+
     const li = document.createElement('li');
+    li.dataset.index = originalIndex;
     li.style.display = 'flex';
     li.style.padding = '5px';
     li.style.borderBottom = '1px solid #ccc';
@@ -43,7 +46,10 @@ function renderList() {
     // 建立文字，點擊後開啟 modal
     const span = document.createElement('span');
     span.textContent = item.name;
-    span.onclick = () => openModal(index);
+    span.onclick = () => {
+      const trueIndex = parseInt(li.dataset.index);
+      openModal(trueIndex);
+    };
 
     // 把勾選框和文字加到 li 裡
     li.appendChild(checkbox);
